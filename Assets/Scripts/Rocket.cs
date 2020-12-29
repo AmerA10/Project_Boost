@@ -26,6 +26,28 @@ public class Rocket : MonoBehaviour
        
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        switch (collision.transform.tag)
+        {
+            case ("Friendly"):
+                {
+                    Debug.Log("Friendly");
+                    break;
+                }
+            case ("Fuel"):
+                Debug.Log("Fuel");
+                break;
+            default:
+                Debug.Log("Dead");
+                //kill player
+                break;
+
+               
+        }
+       
+    }
+
     private void Thrust()
     {
         if (Input.GetKey(KeyCode.Space))
