@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour
 {
@@ -11,7 +12,17 @@ public class Rocket : MonoBehaviour
     [SerializeField]float rcsThrust = 200f;
     [SerializeField] float mainThrust = 100f;
 
+    enum State
+    {
+        Alive, Dying, Transcending
+    }
+    State state = State.Alive;
 
+    private void Awake()
+    {
+        
+      //  state = State.Alive;
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -21,31 +32,52 @@ public class Rocket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Thrust();
-        Rotate();
+        if(state == State.Alive)
+        {
+            Thrust();
+            Rotate();
+        }
+     
        
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if(state != State.Alive)
+        {
+            return; //dont execute if alive
+        }
         switch (collision.transform.tag)
         {
+            
             case ("Friendly"):
                 {
-                    Debug.Log("Friendly");
+                    //why is this here even
                     break;
                 }
-            case ("Fuel"):
-                Debug.Log("Fuel");
+            case ("Finish"):
+                //Move to next level
+                state = State.Transcending;
+                Invoke("LoadNextScene",1f); //make parameter
                 break;
             default:
                 Debug.Log("Dead");
+                state = State.Dying;
+                Invoke("LoadThisScene", 1f); //make parameter
+                       
                 //kill player
                 break;
+        }   
+    }
 
-               
-        }
-       
+    private void LoadThisScene()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    private void LoadNextScene()
+    {
+        SceneManager.LoadScene(1); //allow for more than 2 levels
     }
 
     private void Thrust()
@@ -89,5 +121,4 @@ public class Rocket : MonoBehaviour
         rb.freezeRotation = false; //resumee rotation physics
     }
 
-    
 }
