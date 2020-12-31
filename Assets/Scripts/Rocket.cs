@@ -9,7 +9,7 @@ public class Rocket : MonoBehaviour
     // Start is called before the first frame update
     private Rigidbody rb;
     private AudioSource audio;
-    [SerializeField]float rcsThrust = 200f;
+    [SerializeField] float rcsThrust = 200f;
     [SerializeField] float mainThrust = 100f;
     [SerializeField] AudioClip mainEngine;
     [SerializeField] AudioClip deathSound;
@@ -18,7 +18,7 @@ public class Rocket : MonoBehaviour
     [SerializeField] ParticleSystem mainEngineParticles;
     [SerializeField] ParticleSystem deathParticles;
     [SerializeField] ParticleSystem successParticle;
-
+    [SerializeField] float levelLoadDelay = 2f;
 
     enum State
     {
@@ -78,7 +78,7 @@ public class Rocket : MonoBehaviour
         audio.Stop();
         audio.PlayOneShot(deathSound);
         deathParticles.Play();
-        Invoke("LoadThisScene", 1f); //make parameter
+        Invoke("LoadThisScene", levelLoadDelay); //make parameter
     }
 
     private void StartSuccessSequence()
@@ -88,7 +88,7 @@ public class Rocket : MonoBehaviour
         audio.Stop();
         audio.PlayOneShot(loadLevelSound);
         successParticle.Play();
-        Invoke("LoadNextScene", 1f); //make parameter
+        Invoke("LoadNextScene", levelLoadDelay); //make parameter
     }
 
     private void LoadThisScene()
@@ -121,7 +121,7 @@ public class Rocket : MonoBehaviour
     private void ApplyThrust()
     {
      
-        rb.AddRelativeForce(Vector3.up * mainThrust);
+        rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
         mainEngineParticles.Play();
         if (Input.GetKeyDown(KeyCode.Space))
         {

@@ -401,8 +401,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enviroment
       objectReference: {fileID: 0}
+    - target: {fileID: 6869977884683306729, guid: 433684c2160b5e64e8cb9e1cc8c51d06,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -25.8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 433684c2160b5e64e8cb9e1cc8c51d06, type: 3}
+--- !u!1 &6452855918763715524 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6869977884683306733, guid: 433684c2160b5e64e8cb9e1cc8c51d06,
+    type: 3}
+  m_PrefabInstance: {fileID: 6452855918763715523}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6452855918763715525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6452855918763715524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d2451b8ba02404b91cedffb7c94082, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementVector: {x: 10, y: 0, z: 0}
+  period: 2
+  movementFactor: 0
 --- !u!1001 &6608551593574807317
 PrefabInstance:
   m_ObjectHideFlags: 0
