@@ -15,6 +15,10 @@ public class Rocket : MonoBehaviour
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip loadLevelSound;
 
+    [SerializeField] ParticleSystem mainEngineParticles;
+    [SerializeField] ParticleSystem deathParticles;
+    [SerializeField] ParticleSystem successParticle;
+
 
     enum State
     {
@@ -63,8 +67,7 @@ public class Rocket : MonoBehaviour
                 StartSuccessSequence(); //move to next level 
                 break;
             default:
-                StartDeathSequence();//kill player
-
+                StartDeathSequence();//kill playerf
                 break;
         }   
     }
@@ -74,6 +77,7 @@ public class Rocket : MonoBehaviour
         state = State.Dying;
         audio.Stop();
         audio.PlayOneShot(deathSound);
+        deathParticles.Play();
         Invoke("LoadThisScene", 1f); //make parameter
     }
 
@@ -83,6 +87,7 @@ public class Rocket : MonoBehaviour
         state = State.Transcending;
         audio.Stop();
         audio.PlayOneShot(loadLevelSound);
+        successParticle.Play();
         Invoke("LoadNextScene", 1f); //make parameter
     }
 
@@ -98,23 +103,30 @@ public class Rocket : MonoBehaviour
 
     private void RespondToThrustInput()
     {
-        ApplyThrust();
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
+        {
+
+            ApplyThrust();
+
+        }
+
+        else
         {
             audio.Stop();
+            mainEngineParticles.Stop();
         }
+      
     }
 
     private void ApplyThrust()
     {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            rb.AddRelativeForce(Vector3.up * mainThrust);
-
-        }
-        if (Input.GetKeyDown(KeyCode.Space) && state == State.Alive)
+     
+        rb.AddRelativeForce(Vector3.up * mainThrust);
+        mainEngineParticles.Play();
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             audio.PlayOneShot(mainEngine);
+         
         }
     }
 
@@ -129,7 +141,6 @@ public class Rocket : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
 
-            
             transform.Rotate(Vector3.forward * rotationThisFrame);
 
         }
