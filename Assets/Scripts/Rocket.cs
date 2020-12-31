@@ -30,6 +30,7 @@ public class Rocket : MonoBehaviour
 
     void Start()
     {
+        Debug.Log(SceneManager.sceneCountInBuildSettings);
         rb = GetComponent<Rigidbody>();
         audio = GetComponent<AudioSource>();
     
@@ -44,7 +45,12 @@ public class Rocket : MonoBehaviour
             RespondToRotateInput();
         }
         //todo only when debug is on
-        RespondToDebugKeys();
+        if(Debug.isDebugBuild)
+        {
+            RespondToDebugKeys();
+        }
+
+       
         
     
        
@@ -113,7 +119,9 @@ public class Rocket : MonoBehaviour
 
     private void LoadNextScene()
     {
-        SceneManager.LoadScene(1); //allow for more than 2 levels
+        int currentScene = SceneManager.GetActiveScene().buildIndex; //gets the current scene index
+        int nextScene = currentScene == SceneManager.sceneCountInBuildSettings - 1 ?  0 : currentScene + 1 ;
+        SceneManager.LoadScene(nextScene); //allow for more than 2 levels
     }
 
     private void RespondToThrustInput()
