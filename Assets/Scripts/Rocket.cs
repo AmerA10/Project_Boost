@@ -20,6 +20,8 @@ public class Rocket : MonoBehaviour
     [SerializeField] ParticleSystem successParticle;
     [SerializeField] float levelLoadDelay = 2f;
 
+
+    Boolean enabledCollision = true;
     enum State
     {
         Alive, Dying, Transcending
@@ -30,6 +32,7 @@ public class Rocket : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         audio = GetComponent<AudioSource>();
+    
     }
 
     // Update is called once per frame
@@ -40,13 +43,30 @@ public class Rocket : MonoBehaviour
             RespondToThrustInput();
             RespondToRotateInput();
         }
-     
+        //todo only when debug is on
+        RespondToDebugKeys();
+        
+    
        
+    }
+
+    private void RespondToDebugKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LoadNextScene();
+        }
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            //toggle collision
+
+            enabledCollision = !enabledCollision;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(state != State.Alive)
+        if(state != State.Alive || !enabledCollision)
         {
             return; //dont execute if alive
         }
