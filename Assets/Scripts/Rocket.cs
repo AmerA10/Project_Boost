@@ -26,11 +26,6 @@ public class Rocket : MonoBehaviour
     }
     State state = State.Alive;
 
-    private void Awake()
-    {
-        
-      //  state = State.Alive;
-    }
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -103,17 +98,20 @@ public class Rocket : MonoBehaviour
 
     private void RespondToThrustInput()
     {
+
+        
         if (Input.GetKey(KeyCode.Space))
         {
-
+            
             ApplyThrust();
 
         }
 
-        else
+        else if(Input.GetKeyUp(KeyCode.Space))
         {
             audio.Stop();
             mainEngineParticles.Stop();
+            Debug.Log("stopping particles");
         }
       
     }
@@ -125,6 +123,8 @@ public class Rocket : MonoBehaviour
         mainEngineParticles.Play();
         if (Input.GetKeyDown(KeyCode.Space))
         {
+
+           
             audio.PlayOneShot(mainEngine);
          
         }
