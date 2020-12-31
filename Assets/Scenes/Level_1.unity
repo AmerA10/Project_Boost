@@ -129,6 +129,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 348414410, guid: 0ba49de21f35aa64e86d4e277867fb38, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7366828597131625781, guid: 0ba49de21f35aa64e86d4e277867fb38,
         type: 3}
       propertyPath: m_LocalPosition.x
