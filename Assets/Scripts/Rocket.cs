@@ -11,6 +11,10 @@ public class Rocket : MonoBehaviour
     private AudioSource audio;
     [SerializeField]float rcsThrust = 200f;
     [SerializeField] float mainThrust = 100f;
+    [SerializeField] AudioClip mainEngine;
+    [SerializeField] AudioClip deathSound;
+    [SerializeField] AudioClip loadLevelSound;
+
 
     enum State
     {
@@ -34,8 +38,8 @@ public class Rocket : MonoBehaviour
     {
         if(state == State.Alive)
         {
-            Thrust();
-            Rotate();
+            RespondToThrustInput();
+            RespondToRotateInput();
         }
      
        
@@ -52,22 +56,34 @@ public class Rocket : MonoBehaviour
             
             case ("Friendly"):
                 {
-                    //why is this here even
-                    break;
+                //why is this here even
+                break;
                 }
             case ("Finish"):
-                //Move to next level
-                state = State.Transcending;
-                Invoke("LoadNextScene",1f); //make parameter
+                StartSuccessSequence(); //move to next level 
                 break;
             default:
-                Debug.Log("Dead");
-                state = State.Dying;
-                Invoke("LoadThisScene", 1f); //make parameter
-                       
-                //kill player
+                StartDeathSequence();//kill player
+
                 break;
         }   
+    }
+
+    private void StartDeathSequence()
+    {
+        state = State.Dying;
+        audio.Stop();
+        audio.PlayOneShot(deathSound);
+        Invoke("LoadThisScene", 1f); //make parameter
+    }
+
+    private void StartSuccessSequence()
+    {
+        //Move to next level
+        state = State.Transcending;
+        audio.Stop();
+        audio.PlayOneShot(loadLevelSound);
+        Invoke("LoadNextScene", 1f); //make parameter
     }
 
     private void LoadThisScene()
@@ -80,24 +96,29 @@ public class Rocket : MonoBehaviour
         SceneManager.LoadScene(1); //allow for more than 2 levels
     }
 
-    private void Thrust()
+    private void RespondToThrustInput()
     {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            rb.AddRelativeForce(Vector3.up * mainThrust);
-
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            audio.Play();
-        }
+        ApplyThrust();
         if (Input.GetKeyUp(KeyCode.Space))
         {
             audio.Stop();
         }
     }
 
-    private void Rotate()
+    private void ApplyThrust()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            rb.AddRelativeForce(Vector3.up * mainThrust);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && state == State.Alive)
+        {
+            audio.PlayOneShot(mainEngine);
+        }
+    }
+
+    private void RespondToRotateInput()
     {
 
         rb.freezeRotation = true; //takes manual control of rotation. Free physics rotation
